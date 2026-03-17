@@ -1,0 +1,25 @@
+g, admin, share
+g, share, base
+
+# Atribuição de Roles a Utilizadores (teste)
+g, admin, admin
+g, user1, base
+g, user2, share
+
+# Permissões por Role
+# Admin
+p, admin, /user, POST
+p, admin, /user/{userId}, GET
+p, admin, /user/{userId}, DELETE
+
+# Share (Partilhar listas)
+p, share, /todolist/{listId}/share, POST
+
+# Base
+p, base, /todolist, GET
+p, base, /todolist, POST
+p, base, /todolist/{listId}, GET
+p, base, /todo/item, POST
+p, base, /todo/{listId}/tasks, GET
+p, base, /todo/{listId}/tasks/{taskId}, GET
+p, base, /todo/{listId}/tasks/{taskId}, DELETE

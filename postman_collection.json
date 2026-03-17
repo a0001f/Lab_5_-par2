@@ -1,0 +1,155 @@
+{
+    "info": {
+        "_postman_id": "e5c4a3b2-9d8e-4f7a-8b6c-5d4e3f2a1b0c",
+        "name": "Tasklist API Tests",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "1. Login",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "var token = pm.response.text().replace(\"Bearer \", \"\");",
+                            "pm.environment.set(\"jwt_token\", token);"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"username\": \"user1\",\n    \"password\": \"password1\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:7100/login",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7100",
+                    "path": [
+                        "login"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "2. Create List",
+            "request": {
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "{{jwt_token}}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"listName\": \"My Postman List\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:7100/todolist",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7100",
+                    "path": [
+                        "todolist"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "3. Add Item",
+            "request": {
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "{{jwt_token}}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"description\": \"Test from Postman\",\n    \"listId\": 1\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:7100/todo/item",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7100",
+                    "path": [
+                        "todo",
+                        "item"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "4. Get Lists",
+            "request": {
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "{{jwt_token}}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:7100/todolist",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7100",
+                    "path": [
+                        "todolist"
+                    ]
+                }
+            },
+            "response": []
+        }
+    ]
+}

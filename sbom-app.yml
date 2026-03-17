@@ -1,0 +1,34 @@
+sbom-app:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+      id-token: write
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      # SBOM (Maven / CycloneDX) + Sign
+      - name: Generate SBOM (Application)
+        run: mvn -B org.cyclonedx:cyclonedx-maven-plugin:2.8.0:makeAggregateBom
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Sign SBOM Application
+        run: |
+          cosign sign-blob \
+            --yes \
+            target/bom.json \
+            --output-signature sbom-application.sig \
+            --output-certificate sbom-application.crt
+
+      - name: Upload SBOM Application (+sig +crt)
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-application
+          path: |
+            target/bom.json
+            sbom-application.sig
+            sbom-application.crt

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasklist Manager</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        input {
+            padding: 0.5rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+            border: none;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #f4f4f4;
+            margin-bottom: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="login-section">
+        <h1>Login</h1>
+        <div id="auth-error" class="error hidden"></div>
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="username">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password">
+        </div>
+        <button onclick="login()">Sign In</button>
+        <button onclick="register()" style="background: #28a745;">Register</button>
+        <div style="margin-top: 10px; text-align: center;">
+            <a href="/auth/google"
+                style="display: inline-block; padding: 10px 20px; background-color: #db4437; color: white; text-decoration: none; border-radius: 5px;">Sign
+                in with Google</a>
+        </div>
+    </div>
+
+    <div id="app-section" class="hidden">
+        <div class="header">
+            <h1>My Todo Lists</h1>
+            <button onclick="logout()" style="background: #dc3545;">Logout</button>
+        </div>
+
+        <div class="form-group">
+            <h3>Create New List</h3>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="new-list-name" placeholder="List Name (e.g. Work Projects)">
+                <button onclick="createList()">Create</button>
+            </div>
+        </div>
+
+        <ul id="todo-lists"></ul>
+    </div>
+
+    <script>
+        const API_URL = 'https://localhost:8443';
+        let token = localStorage.getItem('jwt_token');
+
+        function showApp() {
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('app-section').classList.remove('hidden');
+            fetchLists();
+        }
+
+        function showLogin() {
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('app-section').classList.add('hidden');
+        }
+
+        async function register() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('auth-error');
+
+            if (!username || !password) {
+                errorDiv.textContent = "Username and password are required";
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/user`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (response.ok) {
+                    alert('Registration successful! You can now login.');
+                    errorDiv.classList.add('hidden');
+                } else {
+                    const data = await response.json();
+                    throw new Error(data.message || 'Registration failed');
+                }
+            } catch (err) {
+                errorDiv.textContent = err.message;
+                errorDiv.classList.remove('hidden');
+            }
+        }
+
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('auth-error');
+
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (response.ok) {
+                    let text = await response.text();
+                    // Strip "Bearer " if present, though we usually send it back in header
+                    // The API returns "Bearer <token>" string directly.
+                    token = text;
+                    localStorage.setItem('jwt_token', token);
+                    errorDiv.classList.add('hidden');
+                    showApp();
+                } else {
+                    // Start of workaround: Handle non-JSON error responses (like 401 Unauthorized default HTML)
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                        const data = await response.json();
+                        throw new Error(data.message || 'Login failed');
+                    } else {
+                        throw new Error('Login failed (Check credentials)');
+                    }
+                }
+            } catch (err) {
+                errorDiv.textContent = err.message;
+                errorDiv.classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('jwt_token');
+            token = null;
+            showLogin();
+        }
+
+        async function fetchLists() {
+            if (!token) return;
+            try {
+                const response = await fetch(`${API_URL}/todolist`, {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+
+                if (response.ok) {
+                    const lists = await response.json();
+                    renderLists(lists);
+                } else if (response.status === 401) {
+                    logout();
+                }
+            } catch (err) {
+                console.error('Failed to fetch lists', err);
+            }
+        }
+
+        async function createList() {
+            const nameInput = document.getElementById('new-list-name');
+            const listName = nameInput.value;
+            if (!listName) return;
+
+            try {
+                const response = await fetch(`${API_URL}/todolist`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ listName })
+                });
+
+                if (response.ok) {
+                    nameInput.value = '';
+                    fetchLists();
+                } else {
+                    const data = await response.json().catch(() => ({}));
+                    throw new Error(data.message || `Failed to create list: ${response.status} ${response.statusText}`);
+                }
+            } catch (err) {
+                console.error('Failed to create list', err);
+                alert(err.message);
+            }
+        }
+
+        function renderLists(lists) {
+            const container = document.getElementById('todo-lists');
+            container.innerHTML = lists.map(list => `
+                <li>
+                    <span><strong>${list.name}</strong> (ID: ${list.listId})</span>
+                </li>
+            `).join('');
+        }
+
+        // Init
+        // Check for token or error in URL (OAuth2 callback)
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlToken = urlParams.get('token');
+        const urlError = urlParams.get('error');
+
+        if (urlToken) {
+            token = urlToken;
+            localStorage.setItem('jwt_token', token);
+            // Clear URL
+            window.history.replaceState({}, document.title, "/");
+            showApp();
+        } else if (urlError) {
+            const errorDiv = document.getElementById('auth-error');
+            errorDiv.textContent = urlError;
+            errorDiv.classList.remove('hidden');
+            showLogin();
+        } else if (token) {
+            showApp();
+        } else {
+            showLogin();
+        }
+    </script>
+</body>
+
+</html>

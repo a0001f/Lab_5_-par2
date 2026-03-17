@@ -1,0 +1,18 @@
+# Maven
+target/
+*.log
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Markdown documentation
+*.md
+
+# Environment files with secrets
+.env
+oauth2/base.env

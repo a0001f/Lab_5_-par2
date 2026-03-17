@@ -1,0 +1,1185 @@
+{
+  "collection": {
+    "_": {
+      "postman_id": "e5c4a3b2-9d8e-4f7a-8b6c-5d4e3f2a1b0c"
+    },
+    "item": [
+      {
+        "id": "b1040398-8c85-48d2-97bb-80ecbbac6fdd",
+        "name": "1. Login",
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "7100",
+            "path": [
+              "login"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"username\": \"user1\",\n    \"password\": \"password1\"\n}"
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "358bd49e-8627-47e8-bdc8-09519762e2ed",
+              "type": "text/javascript",
+              "exec": [
+                "var token = pm.response.text().replace(\"Bearer \", \"\");",
+                "pm.environment.set(\"jwt_token\", token);"
+              ],
+              "_lastExecutionId": "5fd97c47-8175-4d9e-9992-25d90254ff03"
+            }
+          }
+        ]
+      },
+      {
+        "id": "cc909538-0ab5-47a4-a110-45fb7219bc76",
+        "name": "2. Create List",
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "7100",
+            "path": [
+              "todolist"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"listName\": \"My Postman List\"\n}"
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{jwt_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": []
+      },
+      {
+        "id": "298bf531-542e-46fd-9c55-49ca9581f348",
+        "name": "3. Add Item",
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "7100",
+            "path": [
+              "todo",
+              "item"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"description\": \"Test from Postman\",\n    \"listId\": 1\n}"
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{jwt_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": []
+      },
+      {
+        "id": "f6742815-1efb-46e2-b6d8-1373277cc322",
+        "name": "4. Get Lists",
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "7100",
+            "path": [
+              "todolist"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "GET",
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{jwt_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": []
+      }
+    ],
+    "event": [],
+    "variable": [],
+    "info": {
+      "_postman_id": "e5c4a3b2-9d8e-4f7a-8b6c-5d4e3f2a1b0c",
+      "name": "Tasklist API Tests",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    }
+  },
+  "environment": {
+    "id": "b24f4b1a-b6f2-4d28-9bbe-96c82ceef658",
+    "values": [
+      {
+        "type": "any",
+        "value": "user1",
+        "key": "jwt_token"
+      }
+    ]
+  },
+  "globals": {
+    "id": "23f42f8f-aa07-4457-af49-9955d4aed0a5",
+    "values": []
+  },
+  "run": {
+    "stats": {
+      "iterations": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "items": {
+        "total": 4,
+        "pending": 0,
+        "failed": 0
+      },
+      "scripts": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequests": {
+        "total": 4,
+        "pending": 0,
+        "failed": 0
+      },
+      "requests": {
+        "total": 4,
+        "pending": 0,
+        "failed": 0
+      },
+      "tests": {
+        "total": 4,
+        "pending": 0,
+        "failed": 0
+      },
+      "assertions": {
+        "total": 0,
+        "pending": 0,
+        "failed": 0
+      },
+      "testScripts": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequestScripts": {
+        "total": 0,
+        "pending": 0,
+        "failed": 0
+      }
+    },
+    "timings": {
+      "responseAverage": 8.75,
+      "responseMin": 4,
+      "responseMax": 17,
+      "responseSd": 4.9180788932265,
+      "dnsAverage": 0,
+      "dnsMin": 0,
+      "dnsMax": 0,
+      "dnsSd": 0,
+      "firstByteAverage": 0,
+      "firstByteMin": 0,
+      "firstByteMax": 0,
+      "firstByteSd": 0,
+      "started": 1770292596536,
+      "completed": 1770292596857
+    },
+    "executions": [
+      {
+        "cursor": {
+          "position": 0,
+          "iteration": 0,
+          "length": 4,
+          "cycles": 1,
+          "empty": false,
+          "eof": false,
+          "bof": true,
+          "cr": false,
+          "ref": "c59950f1-3532-439d-b624-528dc8cf0ccb",
+          "httpRequestId": "40759212-ef80-49f3-8a23-947bc38b24d8"
+        },
+        "item": {
+          "id": "b1040398-8c85-48d2-97bb-80ecbbac6fdd",
+          "name": "1. Login",
+          "request": {
+            "url": {
+              "protocol": "http",
+              "port": "7100",
+              "path": [
+                "login"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"user1\",\n    \"password\": \"password1\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "358bd49e-8627-47e8-bdc8-09519762e2ed",
+                "type": "text/javascript",
+                "exec": [
+                  "var token = pm.response.text().replace(\"Bearer \", \"\");",
+                  "pm.environment.set(\"jwt_token\", token);"
+                ],
+                "_lastExecutionId": "5fd97c47-8175-4d9e-9992-25d90254ff03"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "7100",
+            "path": [
+              "login"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "39bbab8f-5df7-40eb-ae46-ffbc2fb45740",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:7100",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "56",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"username\": \"user1\",\n    \"password\": \"password1\"\n}"
+          }
+        },
+        "response": {
+          "id": "3f1f3808-38c3-481f-93b2-8bfd7a13c3c3",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Thu, 05 Feb 2026 11:56:36 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Access-Control-Allow-Methods",
+              "value": "GET, POST, PUT, DELETE, OPTIONS"
+            },
+            {
+              "key": "Access-Control-Allow-Headers",
+              "value": "*"
+            },
+            {
+              "key": "Content-Length",
+              "value": "12"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              66,
+              101,
+              97,
+              114,
+              101,
+              114,
+              32,
+              117,
+              115,
+              101,
+              114,
+              49
+            ]
+          },
+          "cookie": [],
+          "responseTime": 17,
+          "responseSize": 12
+        },
+        "id": "b1040398-8c85-48d2-97bb-80ecbbac6fdd"
+      },
+      {
+        "cursor": {
+          "ref": "073966d6-d642-4d46-a512-edeae4748dc1",
+          "length": 4,
+          "cycles": 1,
+          "position": 1,
+          "iteration": 0,
+          "httpRequestId": "c72b5eaa-8d70-4cf4-897e-3ab453461aa1"
+        },
+        "item": {
+          "id": "cc909538-0ab5-47a4-a110-45fb7219bc76",
+          "name": "2. Create List",
+          "request": {
+            "url": {
+              "protocol": "http",
+              "port": "7100",
+              "path": [
+                "todolist"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"listName\": \"My Postman List\"\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{jwt_token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "7100",
+            "path": [
+              "todolist"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Authorization",
+              "value": "Bearer user1",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "f2b3d39c-e914-48b1-80a0-9f96d5a8d78a",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:7100",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "37",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"listName\": \"My Postman List\"\n}"
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "user1",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": {
+          "id": "8f06fbd6-065c-41c8-a6c5-46f62216d098",
+          "status": "Created",
+          "code": 201,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Thu, 05 Feb 2026 11:56:36 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Access-Control-Allow-Methods",
+              "value": "GET, POST, PUT, DELETE, OPTIONS"
+            },
+            {
+              "key": "Access-Control-Allow-Headers",
+              "value": "*"
+            },
+            {
+              "key": "Content-Length",
+              "value": "48"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              110,
+              97,
+              109,
+              101,
+              34,
+              58,
+              34,
+              77,
+              121,
+              32,
+              80,
+              111,
+              115,
+              116,
+              109,
+              97,
+              110,
+              32,
+              76,
+              105,
+              115,
+              116,
+              34,
+              44,
+              34,
+              117,
+              115,
+              101,
+              114,
+              73,
+              100,
+              34,
+              58,
+              49,
+              44,
+              34,
+              108,
+              105,
+              115,
+              116,
+              73,
+              100,
+              34,
+              58,
+              51,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 7,
+          "responseSize": 48
+        },
+        "id": "cc909538-0ab5-47a4-a110-45fb7219bc76"
+      },
+      {
+        "cursor": {
+          "ref": "c9765318-627c-4452-8395-98f9c90ab8c0",
+          "length": 4,
+          "cycles": 1,
+          "position": 2,
+          "iteration": 0,
+          "httpRequestId": "2ea6d187-38f4-450d-a809-4d2f169a1e0c"
+        },
+        "item": {
+          "id": "298bf531-542e-46fd-9c55-49ca9581f348",
+          "name": "3. Add Item",
+          "request": {
+            "url": {
+              "protocol": "http",
+              "port": "7100",
+              "path": [
+                "todo",
+                "item"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"description\": \"Test from Postman\",\n    \"listId\": 1\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{jwt_token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "7100",
+            "path": [
+              "todo",
+              "item"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Authorization",
+              "value": "Bearer user1",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "bd81c556-e4b6-4198-b40d-ae4d0f7aefe4",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:7100",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "59",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"description\": \"Test from Postman\",\n    \"listId\": 1\n}"
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "user1",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": {
+          "id": "abdadfde-f195-4441-ae90-30edd9ca4733",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Thu, 05 Feb 2026 11:56:36 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Access-Control-Allow-Methods",
+              "value": "GET, POST, PUT, DELETE, OPTIONS"
+            },
+            {
+              "key": "Access-Control-Allow-Headers",
+              "value": "*"
+            },
+            {
+              "key": "Content-Length",
+              "value": "71"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              105,
+              100,
+              34,
+              58,
+              54,
+              44,
+              34,
+              100,
+              101,
+              115,
+              99,
+              114,
+              105,
+              112,
+              116,
+              105,
+              111,
+              110,
+              34,
+              58,
+              34,
+              84,
+              101,
+              115,
+              116,
+              32,
+              102,
+              114,
+              111,
+              109,
+              32,
+              80,
+              111,
+              115,
+              116,
+              109,
+              97,
+              110,
+              34,
+              44,
+              34,
+              99,
+              111,
+              109,
+              112,
+              108,
+              101,
+              116,
+              101,
+              100,
+              34,
+              58,
+              102,
+              97,
+              108,
+              115,
+              101,
+              44,
+              34,
+              108,
+              105,
+              115,
+              116,
+              73,
+              100,
+              34,
+              58,
+              49,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 7,
+          "responseSize": 71
+        },
+        "id": "298bf531-542e-46fd-9c55-49ca9581f348"
+      },
+      {
+        "cursor": {
+          "ref": "9dea08a3-8d53-4396-96d3-4b07faa7188d",
+          "length": 4,
+          "cycles": 1,
+          "position": 3,
+          "iteration": 0,
+          "httpRequestId": "e6971381-a542-40f4-adf7-ee80ef6de619"
+        },
+        "item": {
+          "id": "f6742815-1efb-46e2-b6d8-1373277cc322",
+          "name": "4. Get Lists",
+          "request": {
+            "url": {
+              "protocol": "http",
+              "port": "7100",
+              "path": [
+                "todolist"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{jwt_token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "7100",
+            "path": [
+              "todolist"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer user1",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "2661ef06-4875-4de7-970b-8f61a7b6b5de",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:7100",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET",
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "user1",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": {
+          "id": "adabbbfd-16e6-4e4e-a651-458601100516",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Thu, 05 Feb 2026 11:56:36 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Access-Control-Allow-Methods",
+              "value": "GET, POST, PUT, DELETE, OPTIONS"
+            },
+            {
+              "key": "Access-Control-Allow-Headers",
+              "value": "*"
+            },
+            {
+              "key": "Content-Length",
+              "value": "139"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              91,
+              123,
+              34,
+              110,
+              97,
+              109,
+              101,
+              34,
+              58,
+              34,
+              83,
+              104,
+              111,
+              112,
+              112,
+              105,
+              110,
+              103,
+              32,
+              108,
+              105,
+              115,
+              116,
+              34,
+              44,
+              34,
+              111,
+              119,
+              110,
+              101,
+              114,
+              73,
+              100,
+              34,
+              58,
+              49,
+              44,
+              34,
+              108,
+              105,
+              115,
+              116,
+              73,
+              100,
+              34,
+              58,
+              49,
+              125,
+              44,
+              123,
+              34,
+              110,
+              97,
+              109,
+              101,
+              34,
+              58,
+              34,
+              79,
+              116,
+              104,
+              101,
+              114,
+              34,
+              44,
+              34,
+              111,
+              119,
+              110,
+              101,
+              114,
+              73,
+              100,
+              34,
+              58,
+              49,
+              44,
+              34,
+              108,
+              105,
+              115,
+              116,
+              73,
+              100,
+              34,
+              58,
+              50,
+              125,
+              44,
+              123,
+              34,
+              110,
+              97,
+              109,
+              101,
+              34,
+              58,
+              34,
+              77,
+              121,
+              32,
+              80,
+              111,
+              115,
+              116,
+              109,
+              97,
+              110,
+              32,
+              76,
+              105,
+              115,
+              116,
+              34,
+              44,
+              34,
+              111,
+              119,
+              110,
+              101,
+              114,
+              73,
+              100,
+              34,
+              58,
+              49,
+              44,
+              34,
+              108,
+              105,
+              115,
+              116,
+              73,
+              100,
+              34,
+              58,
+              51,
+              125,
+              93
+            ]
+          },
+          "cookie": [],
+          "responseTime": 4,
+          "responseSize": 139
+        },
+        "id": "f6742815-1efb-46e2-b6d8-1373277cc322"
+      }
+    ],
+    "transfers": {
+      "responseTotal": 270
+    },
+    "failures": [],
+    "error": null
+  }
+}
